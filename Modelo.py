@@ -1,49 +1,27 @@
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+import numpy as np
 
-def calcular_mco(fertilizante, rendimiento):
-    """
-    Calcula la pendiente y el intercepto
-    mediante minimos cuadrados ordinarios.
-    """
 
-    # Validar las cantidades de datos
-    if len(fertilizante) != len(rendimiento):
-        raise ValueError(
-            "Debe existir un rendimiento por cada dato de fertilizante."
-        )
+def entrenar_modelo(datos):
+    X = datos[["Año"]]
+    y = datos["Produccion"]
 
-    if len(fertilizante) < 2:
-        raise ValueError(
-            "Se necesitan al menos dos observaciones."
-        )
+    modelo = LinearRegression()
+    modelo.fit(X, y)
 
-    n = len(fertilizante)
+    predicciones = modelo.predict(X)
 
-    # Calcular los promedios
-    promedio_x = sum(fertilizante) / n
-    promedio_y = sum(rendimiento) / n
+    r2 = r2_score(y, predicciones)
+    error = np.sqrt(mean_squared_error(y, predicciones))
 
-    # Calcular numerador y denominador
-    numerador = 0
-    denominador = 0
+    pendiente = modelo.coef_[0]
+    intercepto = modelo.intercept_
 
-    for i in range(n):
-        numerador += (
-            (fertilizante[i] - promedio_x)
-            * (rendimiento[i] - promedio_y)
-        )
+    return modelo, pendiente, intercepto, r2, error
 
-        denominador += (
-            fertilizante[i] - promedio_x
-        ) ** 2
 
-    # Evitar division entre cero
-    if denominador == 0:
-        raise ValueError(
-            "Los valores de fertilizante deben variar."
-        )
-
-    # Calcular los coeficientes
-    pendiente = numerador / denominador
-    intercepto = promedio_y - pendiente * promedio_x
-
-    return pendiente, intercepto
+def predecir_produccion(modelo, año):
+    prediccion = modelo.predict(pd.DataFrame({"Año": [año]}))
+    return prediccion[0]
