@@ -1,5 +1,5 @@
 import pandas as pd
-from modelo import entrenar_modelo, predecir_produccion
+from Modelo import entrenar_modelo, predecir_produccion
 
 # Cargar los datos
 datos = pd.read_csv("data/produccion_maiz.csv")
