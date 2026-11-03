@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-from modelo import entrenar_modelo, predecir_produccion
+from Modelo import entrenar_modelo, predecir_produccion
 from graficas import crear_grafica
 
 
