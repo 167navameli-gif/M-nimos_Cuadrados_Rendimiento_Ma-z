@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 from Modelo import entrenar_modelo, predecir_produccion
-from graficas import crear_grafica
+from Graficas import crear_grafica
 
 
 st.set_page_config(
