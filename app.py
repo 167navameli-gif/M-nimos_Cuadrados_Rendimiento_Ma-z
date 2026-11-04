@@ -83,9 +83,9 @@ try:
         "Año": range(2025, 2036)
     })
 
-    años_futuros["Producción estimada"] = modelo.predict(
-        años_futuros[["Año"]]
-    )
+    años_futuros["Producción estimada"] = años_futuros["Año"].apply(
+    lambda año: predecir_produccion(modelo, año)
+)
 
     st.dataframe(años_futuros, use_container_width=True)
 
