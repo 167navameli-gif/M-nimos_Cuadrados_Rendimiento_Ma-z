@@ -7,11 +7,10 @@ from Graficas import crear_grafica
 
 st.set_page_config(
     page_title="Predicción de maíz en México",
-    page_icon="🌽",
     layout="wide"
 )
 
-st.title("🌽 Predicción de la producción de maíz en México")
+st.title(" Predicción de la producción de maíz en México")
 
 st.write(
     "Sistema de análisis y predicción de producción agrícola "
@@ -20,6 +19,8 @@ st.write(
 
 st.markdown("### Fuente de datos: FAOSTAT")
 
+
+# Cargar datos históricos
 @st.cache_data
 def cargar_datos():
     return pd.read_csv("data/produccion_maiz.csv")
@@ -28,13 +29,81 @@ def cargar_datos():
 try:
     datos = cargar_datos()
 
-    st.subheader("Datos históricos")
+     
+    st.subheader(" Editar datos históricos")
 
-    st.dataframe(datos, use_container_width=True)
+    st.write(
+        "Puedes modificar los años y la producción, "
+        " y/ o agregar nuevos registros o eliminar los existentes."
+    )
 
-    modelo, pendiente, intercepto, r2, error = entrenar_modelo(datos)
+    datos_editados = st.data_editor(
+        datos,
+        num_rows="dynamic",
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "Año": st.column_config.NumberColumn(
+                "Año",
+                format="%d",
+                step=1
+            ),
+            "Produccion": st.column_config.NumberColumn(
+                "Producción (toneladas)",
+                format="%.2f",
+                min_value=0
+            )
+        },
+        key="editor_datos"
+    )
+
+    datos = datos_editados.copy()
+
+    datos["Año"] = pd.to_numeric(
+        datos["Año"], errors="coerce"
+    )
+
+    datos["Produccion"] = pd.to_numeric(
+        datos["Produccion"], errors="coerce"
+    )
+
+    if (
+        datos.empty
+        or datos.isnull().any().any()
+        or not (datos["Año"] % 1 == 0).all()
+        or (datos["Produccion"] < 0).any()
+        or datos["Año"].duplicated().any()
+    ):
+        st.error(
+            "Revisa los datos: no puede haber celdas vacías, "
+            "años repetidos, años no enteros ni producciones negativas."
+        )
+        st.stop()
+
+    datos["Año"] = datos["Año"].astype(int)
+
+    datos = datos.sort_values("Año").reset_index(drop=True)
+    
+    if st.button(" Guardar cambios", type="primary"):
+
+        datos.to_csv(
+            "data/produccion_maiz.csv",
+            index=False
+        )
+
+        cargar_datos.clear()
+
+        st.success("¡Los datos se guardaron correctamente!")
+
+    st.info(
+        "Los cambios realizados en la tabla se reflejan "
+        "en los cálculos. Presiona Guardar cambios para "
+        "conservarlos en el archivo CSV."
+    )    
 
     st.subheader("Resultados del modelo")
+
+    modelo, pendiente, intercepto, r2, error = entrenar_modelo(datos)
 
     col1, col2, col3 = st.columns(3)
 
@@ -49,12 +118,12 @@ try:
 
     st.write(
         "El intercepto es el valor estimado cuando el año es cero; "
-        "no tiene una interpretación práctica directa en este contexto."
+        
     )
 
     st.write(
-        "R² indica qué proporción de la variación histórica explica "
-        "el modelo lineal."
+        "R² indica qué tan dispersos están los datos alrededor de la línea de tendencia. "
+        "cuanto más cerca esté de 1, mejor será la ajuste del modelo."
     )
 
     st.subheader("Gráfica de producción histórica y tendencia")
@@ -84,10 +153,13 @@ try:
     })
 
     años_futuros["Producción estimada"] = años_futuros["Año"].apply(
-    lambda año: predecir_produccion(modelo, año)
-)
+        lambda año: predecir_produccion(modelo, año)
+    )
 
-    st.dataframe(años_futuros, use_container_width=True)
+    st.dataframe(
+        años_futuros,
+        use_container_width=True
+    )
 
     st.info(
         "Las predicciones son estimaciones matemáticas basadas en "
@@ -95,7 +167,11 @@ try:
         "una garantía de producción futura."
     )
 
-    st.caption("Proyecto académico | Datos proporcionados de FAOSTAT")
+    st.caption(
+        "Proyecto académico | Datos proporcionados de FAOSTAT"
+    )
 
 except Exception as e:
-    st.error(f"Ocurrió un error al cargar o procesar los datos: {e}")
+    st.error(
+        f"Ocurrió un error al cargar o procesar los datos: {e}"
+    )
