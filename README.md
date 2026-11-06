@@ -9,8 +9,10 @@ El proyecto consiste en la creación de una aplicación para utilizar el método
 Proyecto de segundo parcial.
 
 # Integrantes: 
-María Magdalena Sánchez Nicasio
-Celeste Lopez Rodriguez 
+María Magdalena Sánchez Nicasio 
+
+Celeste López Rodríguez 
+
 Melissa Nava Jiménez
 
 # Lenguaje: 
@@ -34,7 +36,7 @@ Por esta razón se desarrollo la aplicación,para que los pequeños productores 
 # Objetivo General:
 El proyecto busca demostrar como pueden aplicarse los conocimientos de programación  y estadística para analizar infromación agrícola real y generar herramientas de apoyo al estudio de tendencias productivas.
 
-# Objetivos partciculares
+# Objetivos partciculares:
 
 1. Recopilar y organizar datos historicos de producción de maíz en México obtenidos de FAOSTAT.
 2. Implementar el método de mínimos cuadrados ordinarios mediante operaciones matemáticas programadas en Python.
@@ -45,14 +47,14 @@ El proyecto busca demostrar como pueden aplicarse los conocimientos de programac
 7. Generar estimaciones de producción para años futuros. 
 8. Utilizar Gthub como herramienta de colaboración y control de versiones. 
 
-# Solución
+# Solución:
 El funcionamiento comienza con la lectura de un archivo CSV que contiene los años y los valores de producción de maíz en toneladas. Posteriormente, el sistema utiliza estos datos para calcular los parámetros de una recta mediante mínimos cuadrados ordinarios.
 Una vez obtenidos los parámetros, la aplicación permite estimar la producción correspondiente a una año seleccionado por el usuario.
 Finalmente, los resultados se muestran mediante tablas, indicadores numéricos y una gráfica que representa los datos hstóricos junto con la línea de tendencia. 
 
 La aplicación final permite editar la tabla de los datos analizados donde el productor puede registrar su producción sin importar el cultivo y realizar sus propia estimación. 
 
-# Fuente y descripción de los datos
+# Fuente y descripción de los datos:
 
 Los datos utilizados fueron obtenidos de FAOSTAT, la plataforma estadística de la Organización de las Naciones Unidas para la Alimentación y la Agricultura (FAO).
 
@@ -133,6 +135,10 @@ El proyecto esta dividido en archivos que cumplen funciones específicas y fuero
 - Estimaciones de producción para los años seleccionados:
 ![alt text](image-3.png)
 Los resultados deben interpretarse considerando que la producción agrícola está influida por diferentes factores que no forman parte del modelo.
+https://github.com/167navameli-gif/M-nimos_Cuadrados_Rendimiento_Ma-z 
+
+# Conexión entre archivos: 
+app.py carga los datos del CSV, solicita los cálculos a Modelo.py, envía los resultados a Graficas.py y finalmente presenta las tablas, los indicadores y las predicciones al usuario mediante Streamlit.
 
 # Conclusiones:
 Desarrollar este proyecto nos permitió aplicar nuestros conocimientos de programación, estadística y análisis de datos a una situación relacionada con nuestra área de especialización de la carrera. 
@@ -156,7 +162,7 @@ Para instalar las bibliotecas necesarias se utiliza el siguiente comando:
 
 python -m pip install -r requirements.txt 
 
-# Ejecución
+# Ejecución:
 Para ejecutar las pruebas del modelo:
 
 python prueba.py
@@ -165,11 +171,8 @@ Para iniciar la aplicación:
 
 python -m streamlit run app.py
 
-Una vez iniciado Streamlit, la aplicación puede abrirse desde la dirección local que aparece en la terminal:
-
-
-# Conección entre modulos: 
-app.py carga los datos del CSV, solicita los cálculos a Modelo.py, envía los resultados a Graficas.py y finalmente presenta las tablas, los indicadores y las predicciones al usuario mediante Streamlit.
+Una vez iniciado Streamlit, la aplicación puede abrirse desde la siguiente dirección:
+https://minimos-cuadrados-maiz.streamlit.app/
 
 # Referencias:
 Organización de las Naciones Unidas para la Alimentación y la Agricultura. FAOSTAT. https://www.fao.org/faostat/
