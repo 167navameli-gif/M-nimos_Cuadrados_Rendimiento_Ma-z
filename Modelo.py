@@ -1,49 +1,44 @@
+import numpy as np
 
-def calcular_mco(fertilizante, rendimiento):
-    """
-    Calcula la pendiente y el intercepto
-    mediante minimos cuadrados ordinarios.
-    """
 
-    # Validar las cantidades de datos
-    if len(fertilizante) != len(rendimiento):
-        raise ValueError(
-            "Debe existir un rendimiento por cada dato de fertilizante."
-        )
+def entrenar_modelo(datos):
+    x = datos["Año"].to_numpy(dtype=float)
+    y = datos["Produccion"].to_numpy(dtype=float)
 
-    if len(fertilizante) < 2:
-        raise ValueError(
-            "Se necesitan al menos dos observaciones."
-        )
+    promedio_x = np.mean(x)
+    promedio_y = np.mean(y)
 
-    n = len(fertilizante)
+    numerador = np.sum((x - promedio_x) * (y - promedio_y))
+    denominador = np.sum((x - promedio_x) ** 2)
 
-    # Calcular los promedios
-    promedio_x = sum(fertilizante) / n
-    promedio_y = sum(rendimiento) / n
-
-    # Calcular numerador y denominador
-    numerador = 0
-    denominador = 0
-
-    for i in range(n):
-        numerador += (
-            (fertilizante[i] - promedio_x)
-            * (rendimiento[i] - promedio_y)
-        )
-
-        denominador += (
-            fertilizante[i] - promedio_x
-        ) ** 2
-
-    # Evitar division entre cero
     if denominador == 0:
-        raise ValueError(
-            "Los valores de fertilizante deben variar."
-        )
+        raise ValueError("No se puede calcular la pendiente.")
 
-    # Calcular los coeficientes
     pendiente = numerador / denominador
     intercepto = promedio_y - pendiente * promedio_x
 
-    return pendiente, intercepto
+    predicciones = pendiente * x + intercepto
+
+    suma_errores = np.sum((y - predicciones) ** 2)
+    suma_total = np.sum((y - promedio_y) ** 2)
+
+    if suma_total == 0:
+        r2 = 1.0 if suma_errores == 0 else 0.0
+    else:
+        r2 = 1 - (suma_errores / suma_total)
+
+    error = np.sqrt(np.mean((y - predicciones) ** 2))
+
+    modelo = {
+        "pendiente": pendiente,
+        "intercepto": intercepto
+    }
+
+    return modelo, pendiente, intercepto, r2, error
+
+
+def predecir_produccion(modelo, año):
+    return (
+        modelo["pendiente"] * año
+        + modelo["intercepto"]
+    )
