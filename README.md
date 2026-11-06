@@ -111,14 +111,77 @@ Expresa la magnitud típica de los errores de ajuste, en toneladas.Estas métric
 - Git y GitHub: Control de versiones y colaboración en equipo.
 
 # Organización del código: 
-El proyecto esta dividido en archivos que cumplen funciones específicas: 
+El proyecto esta dividido en archivos que cumplen funciones específicas y fueron realizadas por su respectivo responsable: 
 
-- app.py: (Celeste) : Contiene la interfaz principal desarrollada en Streamlit. Carga los datos (que pueden ser editados por los propios de cada productor), presenta los resultados y permite seleccionar años futuros.
-- Modelo.py: (Magda) Contiene la implementación matematica de mínimos cuadrados ordinarios, el calculo de métricas y la función para realizar estimaciones.
-- graficas.py: (Celeste) Genera la representación gráfica de la produción histórica y la línea de tendencia. 
-- prueba.py; (Magda) Permite comprobar de manera independiente los cálculos y las predicciones del modelo.
-- data/producción_maiz.csv: (Archivo descargado por nosotraas) almacena los datos historicos de producción de maíz.  
-- requirements.txt: (Magdis) Registra las biliotecas necesarias de producción de maíz. 
-- README.md: (Meli) contiene la explicación técnica del proyecto
+- app.py: Celeste y Melissa. Contiene la interfaz principal desarrollada en Streamlit. Carga los datos (que pueden ser editados por los propios de cada productor), presenta los resultados y permite seleccionar años futuros.
+- Modelo.py: Magdalena. Contiene la implementación matematica de mínimos cuadrados ordinarios, el calculo de métricas y la función para realizar estimaciones.
+- graficas.py: Celeste.Genera la representación gráfica de la produción histórica y la línea de tendencia. 
+- prueba.py: Magdalena. Permite comprobar de manera independiente los cálculos y las predicciones del modelo.
+- data/producción_maiz.csv: Archivo descargado por nosotras. Almacena los datos historicos de producción de maíz.  
+- requirements.txt: Magdalena. Registra las bibliotecas necesarias de producción de maíz. 
+- README.md: Melissa. Contiene la explicación técnica del proyecto.
 
 # Resultados: 
+- Visualización de los datos históricos de producción:
+![alt text](image.png)
+- Cálculo de la pendiente y el intercepto:
+- Obtención del coeficiente R²:
+- Cálculo del error RMSE:
+![alt text](image-1.png)
+- Representación gráfica de los registros históricos y la tendencia:
+![alt text](image-2.png)
+- Estimaciones de producción para los años seleccionados:
+![alt text](image-3.png)
+Los resultados deben interpretarse considerando que la producción agrícola está influida por diferentes factores que no forman parte del modelo.
+
+# Conclusiones:
+Desarrollar este proyecto nos permitió aplicar nuestros conocimientos de programación, estadística y análisis de datos a una situación relacionada con nuestra área de especialización de la carrera. 
+Utilizar Python y Streamlit nos ayudo a integrar los cálculos en una aplicación interactiva para así facilitar la visualización e interacción para los productores.
+
+# Concluciones particulares: 
+Se utilizó Streamlit para desarrollar la interfaz de la aplicación debido a que permite integrar herramientas interactivas directamente con Python, sin necesidad de programar una página web desde cero. Se implementó st.data_editor() para que el usuario pueda modificar, agregar o eliminar registros históricos de producción de maíz, mientras que Pandas permite procesar, ordenar y validar los datos antes de utilizarlos en los cálculos. Se incorporaron validaciones para evitar años duplicados, valores negativos, registros incompletos y años no enteros, con el propósito de reducir errores en el modelo. Además, se utilizó st.cache_data para optimizar la carga del archivo CSV y un botón para guardar los cambios. Finalmente, mediante st.slider(), st.metric() y st.pyplot(), se facilita la selección de años futuros y la visualización de predicciones, indicadores estadísticos y gráficas. Estas decisiones permiten que la aplicación sea interactiva, organizada y adaptable a nuevos datos históricos.
+# Como ejecutarlo:
+Requisitos
+Para ejecutar el proyecto se necesita:
+-Python 3.
+-Las bibliotecas indicadas en requirements.txt.
+-Una terminal de comandos.
+
+# Instalación:
+Primero se debe descargar o clonar el repositorio desde GitHub.
+
+Posteriormente, se debe abrir la carpeta principal del proyecto en Visual Studio Code o en una terminal.
+
+Para instalar las bibliotecas necesarias se utiliza el siguiente comando:
+
+python -m pip install -r requirements.txt 
+
+# Ejecución
+Para ejecutar las pruebas del modelo:
+
+python prueba.py
+
+Para iniciar la aplicación:
+
+python -m streamlit run app.py
+
+Una vez iniciado Streamlit, la aplicación puede abrirse desde la dirección local que aparece en la terminal:
+
+
+# Conección entre modulos: 
+app.py carga los datos del CSV, solicita los cálculos a Modelo.py, envía los resultados a Graficas.py y finalmente presenta las tablas, los indicadores y las predicciones al usuario mediante Streamlit.
+
+# Referencias:
+Organización de las Naciones Unidas para la Alimentación y la Agricultura. FAOSTAT. https://www.fao.org/faostat/
+
+Python Software Foundation. Documentación de Python. https://docs.python.org/3/
+
+Streamlit. Documentación oficial. https://docs.streamlit.io/
+
+NumPy. Documentación oficial. https://numpy.org/doc/
+
+Pandas. Documentación oficial. https://pandas.pydata.org/docs/
+
+Matplotlib. Documentación oficial. https://matplotlib.org/stable/
+
+GitHub. Documentación oficial. https://docs.github.com/
